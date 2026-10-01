@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 //import { useState } from 'react';
 import MovieGrid from '../components/MovieGrid';
-import { getMovies, CACHE_KEY } from '../api/tmdb';
-import { forget } from '../api/cache';
+//import { getMovies, CACHE_KEY } from '../api/tmdb';
+//import { forget } from '../api/cache';
+import { getMovies } from '../api/backend.js';
 //import { movies as localMovies } from '../data/data';
 // TODO ขั้นที่ 3: import { useEffect } from 'react' และ import { getMovies, CACHE_KEY } from '../api/tmdb' กับ { forget } from '../api/cache'
 
@@ -19,6 +20,7 @@ function Movies() {
   const movies = localMovies;
   const status = 'success';
   const error = null;*/
+  
 
   const [movies, setMovies] = useState([]);        // รายการจาก getMovies() (โหลดจริงวันละครั้ง)
   const [status, setStatus] = useState('loading'); // 'loading' | 'success' | 'error'
@@ -83,10 +85,10 @@ function Movies() {
           <button key={g} onClick={() => setGenre(g)} className={chipClass(genre === g)}>{g}</button>
         ))}
       </div>
-
+      
       <MovieGrid movies={shown} status={status} error={error}
-                  onRetry={() => { /* TODO ขั้นที่ 3: forget(CACHE_KEY) แล้ว setReloadKey(k => k + 1) */
-                    forget(CACHE_KEY); setReloadKey(k => k + 1); }} />
+                  /* TODO ขั้นที่ 3:  setReloadKey(k => k + 1) */
+                  onRetry={() => { setReloadKey(k => k + 1); }} />
     </div>
   );
 }
