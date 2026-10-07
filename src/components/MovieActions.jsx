@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 // TODO ขั้นที่ 5 (Lab): import { putVote, addToWishlist, removeFromWishlist } from '../api/backend';
+import { putVote, addToWishlist, removeFromWishlist } from '../api/backend';
 
 // แถบปุ่มใต้ชื่อหนัง: ให้คะแนน 1 ถึง 10 และปุ่มเพิ่มเข้า wishlist (ต้อง login)
 function MovieActions({ movieId }) {
@@ -9,6 +10,7 @@ function MovieActions({ movieId }) {
   const [myScore, setMyScore] = useState(null);
   const [inWishlist, setInWishlist] = useState(false);
   const [message, setMessage] = useState(null);
+  const { token } = useAuth();                   // TODO ขั้นที่ 5 (Lab): ดึง token มาด้วย เพื่อส่งให้ putVote / addToWishlist
 
   if (!isLoggedIn) {
     return (
@@ -20,14 +22,30 @@ function MovieActions({ movieId }) {
 
   async function handleVote(score) {
     // TODO ขั้นที่ 5 (Lab): await putVote(movieId, score, token) ก่อน แล้วค่อย setMyScore ถ้าพลาดให้ setMessage(err.message)
+    try {
+      await putVote(movieId, score, token);
+    } catch (err) {
+      setMessage(err.message);
+      return;
+    }
     setMyScore(score);                             // ตอนนี้เปลี่ยนแค่บนจอ refresh แล้วหาย เพราะยังไม่ได้ส่งไป server
-    setMessage('คะแนนยังอยู่แค่บนจอ ยังไม่ได้ส่งไป API (ขั้นที่ 5)');
+    //setMessage('คะแนนยังอยู่แค่บนจอ ยังไม่ได้ส่งไป API (ขั้นที่ 5)');
   }
 
   async function handleWishlist() {
     // TODO ขั้นที่ 5 (Lab): ถ้า inWishlist ให้ await removeFromWishlist ไม่งั้น await addToWishlist แล้วค่อยสลับค่า
+    try {
+      if (inWishlist) {
+        await removeFromWishlist(movieId, token);
+      } else {
+        await addToWishlist(movieId, token);
+      }
+    } catch (err) {
+      setMessage(err.message);
+      return;
+    }
     setInWishlist(!inWishlist);
-    setMessage('ยังไม่ได้ส่งไป API (ขั้นที่ 5) เปิดหน้า "อยากดู" จะไม่เจอเรื่องนี้');
+    //setMessage('ยังไม่ได้ส่งไป API (ขั้นที่ 5) เปิดหน้า "อยากดู" จะไม่เจอเรื่องนี้');
   }
 
   return (
