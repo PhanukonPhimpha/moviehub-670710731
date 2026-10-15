@@ -28,7 +28,7 @@ export async function apiFetch(path, { method = 'GET', body, token } = {}) {
 
   //   4) อ่าน res.json() ถ้า res.ok ไม่จริง ให้ throw new Error(data.error) และแนบ err.status = res.status ไว้ให้หน้าเว็บตัดสินใจ
   if (!res.ok) {                                             // 4) 400 / 401 / 404 / 409 มาลงตรงนี้
-    const err = new Error(data.error || `server ตอบกลับ ${res.status}`);
+    const err = new Error(data.error?.message ?? data.error ?? `server ตอบกลับ ${res.status}`);
     err.status = res.status;                                 //    แนบเลขไว้ให้หน้าเว็บใช้ต่อ
     throw err;
   }
