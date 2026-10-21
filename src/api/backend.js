@@ -2,8 +2,9 @@
 // ต่างจาก tmdb.js ตรงที่มี POST / PUT / DELETE และต้องแนบ token สำหรับ endpoint ที่ต้อง login
 
 // '' = origin เดียวกับหน้าเว็บ CRA จะ proxy /api ไปที่ http://localhost:4000 ให้ (ตั้งใน package.json)
-// ตอนต่อ Go จริง ตั้ง REACT_APP_API_URL=https://api.ทีมเรา.xyz ใน .env และบน Vercel
-const BASE = process.env.REACT_APP_API_URL || '';
+// ใช้ relative URL เพื่อให้ Vercel proxy /api ไปยัง Render และเลี่ยง CORS ใน browser
+// ตอนพัฒนา CRA จะ proxy /api ไปที่ localhost:4000 ตาม package.json
+const BASE = '';
 
 // ฟังก์ชันเดียวที่ fetch จริง ทุกฟังก์ชันด้านล่างเรียกผ่านตัวนี้
 export async function apiFetch(path, { method = 'GET', body, token } = {}) {
