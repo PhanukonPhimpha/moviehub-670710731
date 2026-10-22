@@ -1,10 +1,9 @@
 // ชั้นกลางสำหรับคุยกับ Backend ของทีมเรา (วันนี้คือ mock ที่พอร์ต 4000 สัปดาห์หน้าคือ Go)
 // ต่างจาก tmdb.js ตรงที่มี POST / PUT / DELETE และต้องแนบ token สำหรับ endpoint ที่ต้อง login
 
-// '' = origin เดียวกับหน้าเว็บ CRA จะ proxy /api ไปที่ http://localhost:4000 ให้ (ตั้งใน package.json)
-// ตั้ง REACT_APP_API_URL บน Vercel เป็น URL ของ backend บน Render
-// ถ้าไม่ได้ตั้ง จะใช้ backend Render นี้เป็นค่าเริ่มต้น
-const BASE = process.env.REACT_APP_API_URL || 'https://week6-lab-l742.onrender.com';
+// ใช้ relative URL เพื่อให้ browser เรียก origin เดียวกับเว็บ; Vercel ส่ง /api ต่อไปยัง Render
+// ตอนพัฒนา CRA จะ proxy /api ไปที่ http://localhost:4000 ตาม package.json
+const BASE = '';
 
 // ฟังก์ชันเดียวที่ fetch จริง ทุกฟังก์ชันด้านล่างเรียกผ่านตัวนี้
 export async function apiFetch(path, { method = 'GET', body, token } = {}) {
